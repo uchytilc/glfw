@@ -990,6 +990,11 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         }
 
         case WM_ENTERSIZEMOVE:
+        {
+            /////////////////////////////////////////////
+            SetTimer(window->win32.handle, 1, USER_TIMER_MINIMUM, NULL);
+            /////////////////////////////////////////////
+        }
         case WM_ENTERMENULOOP:
         {
             if (window->win32.frameAction)
@@ -1006,6 +1011,11 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
         }
 
         case WM_EXITSIZEMOVE:
+        {
+            /////////////////////////////////////////////
+            KillTimer(window->win32.handle, 1);
+            /////////////////////////////////////////////
+        }
         case WM_EXITMENULOOP:
         {
             if (window->win32.frameAction)
@@ -1020,6 +1030,14 @@ static LRESULT CALLBACK windowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM l
 
             break;
         }
+
+        /////////////////////////////////////////////
+        case WM_TIMER:
+        {
+            _glfwInputWindowDamage(window);
+            break;
+        }
+        /////////////////////////////////////////////
 
         case WM_SIZE:
         {
